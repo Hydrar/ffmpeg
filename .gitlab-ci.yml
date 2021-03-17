@@ -1,13 +1,13 @@
 
 stages:
   - lint
-  - alpine311
+  - alpine312
   - alpine38
   - centos7
   - centos8
   - nvidia1604
   - nvidia1804
-  - scratch311
+  - scratch312
   - scratch38
   - ubuntu1804
   - ubuntu2004
