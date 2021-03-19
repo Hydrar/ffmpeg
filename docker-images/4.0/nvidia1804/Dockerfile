@@ -64,6 +64,7 @@ ENV         FFMPEG_VERSION=4.0.6 \
             LIBSRT_VERSION=1.4.1 \
             LIBARIBB24_VERSION=1.0.3 \
             LIBPNG_VERSION=1.6.9 \
+            LIBVMAF_VERSION=2.1.1 \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5d03dd76c2171a7601e9ce10551d52d4471cf92cd205948e60289251daddffa8 freetype-2.5.5.tar.gz"
@@ -508,6 +509,18 @@ RUN \
         make install && \
         rm -rf ${DIR}
 
+## libvmaf https://github.com/Netflix/vmaf
+RUN \
+        DIR=/tmp/vmaf && \
+        mkdir -p ${DIR} && \
+        git clone -b v${LIBVMAF_VERSION} --depth=1 https://github.com/Netflix/vmaf.git ${DIR} && \
+        cd ${DIR}/libvmaf && \
+        meson build --buildtype=release --prefix=${PREFIX} && \
+        ninja -vC build test install && \
+        cd ${DIR} && \
+        cp -r model ${PREFIX}/share/ && \
+        rm -rf ${DIR}
+
 ## ffmpeg https://ffmpeg.org/
 RUN  \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
@@ -556,6 +569,7 @@ RUN \
         --enable-libaom \
         --extra-libs=-lpthread \
         --enable-libsrt \
+        --enable-libvmaf \
         --enable-nvenc \
         --enable-cuda \
         --enable-cuvid \
