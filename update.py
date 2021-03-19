@@ -211,6 +211,10 @@ for version in keep_version:
         if version == "snapshot" or float(version[0:3]) >= 4.2:
             FFMPEG_CONFIG_FLAGS.append("--enable-libaribb24")
 
+        # libvmaf is supported from 3.4
+        if version == "snapshot" or float(version[0:3]) >= 3.4:
+            FFMPEG_CONFIG_FLAGS.append("--enable-libvmaf")
+
         if (version == "snapshot" or int(version[0]) >= 3) and variant[
             "parent"
         ] == "vaapi":
