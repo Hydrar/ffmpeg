@@ -526,7 +526,7 @@ RUN \
         mkdir -p ${DIR} && \
         git clone -b v${LIBVMAF_VERSION} --depth=1 https://github.com/Netflix/vmaf.git ${DIR} && \
         cd ${DIR}/libvmaf && \
-        meson build --buildtype=release --prefix=${PREFIX} && \
+        meson build --buildtype=release -Denable_float=true --prefix=${PREFIX} && \
         ninja -vC build test install && \
         cd ${DIR} && \
         cp -r model ${PREFIX}/share/ && \
