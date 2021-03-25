@@ -38,7 +38,10 @@ RUN      buildDeps="autoconf \
                     python \
                     libssl-dev \
                     yasm \
-                    zlib1g-dev" && \
+                    zlib1g-dev \
+                    meson \
+                    ninja-build \
+                    xxd" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
 %%RUN%%
@@ -53,7 +56,8 @@ RUN \
         mkdir -p /usr/local/lib/pkgconfig && \
         for pc in ${PREFIX}/lib/pkgconfig/libav*.pc ${PREFIX}/lib/pkgconfig/libpostproc.pc ${PREFIX}/lib/pkgconfig/libsw*.pc; do \
           sed "s:${PREFIX}:/usr/local:g" <"$pc" >/usr/local/lib/pkgconfig/"${pc##*/}"; \
-        done
+        done; \
+        cp -r ${PREFIX}/share/model /usr/local/share/
 
 FROM        base AS release
 MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
